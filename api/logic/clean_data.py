@@ -1,5 +1,6 @@
 from config import data_path
 import pandas as pd
+#from pandas.core.frame import DataFrame
 
 #Might be used for multiple paths / files in the future
 def load_relevant_data():
@@ -34,9 +35,6 @@ def get_clean_data():
 
     #Convert type to datetime
     df['Date'] = pd.to_datetime(df['Date'], errors="coerce",dayfirst=True)    
-    
-    #Might be needed
-    #df['Month'] = df['Date'].dt.month
 
     #Rephrase user
     df['User'] = df['User'].str.replace(':','')
@@ -47,4 +45,22 @@ def get_clean_data():
 
     df['Month_year'] = pd.to_datetime(df['Date']).dt.to_period('M')
 
+    # Drop date becouse not used in this version
+    df.drop('Date', axis=1, inplace=True)
     return df
+
+def get_lastmonth_df(df: pd.DataFrame) -> pd.DataFrame:
+    '''
+    Retrieves a DataFrame with last month values only ('Month_Year' column)
+    '''
+    last_month = df['Month_year'].max() #busco ultimo mes
+    return df.loc[df['Month_year'] == last_month] #devuelvo df con solo las que sean del ultimo mes
+
+def get_lastmonth_grouped_df(df: pd.DataFrame, group2: str, group1: str = 'Month_year') -> pd.DataFrame:
+    '''
+    Retreives a dataframe grouped by 'Month_year' column and a second one specified in group2
+    Only for last_month
+    Dataframe has values Group2 and Price
+    '''
+    lastmonth_df = get_lastmonth_df(df)
+    return lastmonth_df.groupby([group1,group2], as_index= False)['Price'].sum()

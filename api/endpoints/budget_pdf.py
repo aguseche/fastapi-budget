@@ -1,8 +1,10 @@
 from typing import List
 from fastapi import APIRouter
-#from fastapi.responses import FileResponse FileResponse('report.pdf') 
+import tempfile
 
-from api.logic.clean_data import get_clean_data
+from api.logic.clean_data import get_clean_data, get_lastmonth_grouped_df
+from api.logic.data_visualization import create_barchart
+from api.logic.pdf_generator import create_pdf
 router = APIRouter()
 
 
@@ -15,4 +17,8 @@ def monthly_budget():
     '''
     Returns a pdf that visualizes your expenses
     '''
-    return get_clean_data()
+    df = get_clean_data()
+    #this should be a function that graphs every chart
+    create_barchart(get_lastmonth_grouped_df(df, 'Type'))
+    create_barchart(get_lastmonth_grouped_df(df, 'User'))
+    return 1
