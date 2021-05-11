@@ -1,11 +1,7 @@
-from typing import List
-from fastapi import APIRouter
-import tempfile
+from fastapi import APIRouter, BackgroundTasks
 from fastapi.responses import FileResponse
 
-from api.logic.clean_data import get_clean_data, get_lastmonth_grouped_df
-from api.logic.data_visualization import create_barchart
-from api.logic.pdf_generator import create_analytics_report
+from api.logic.Controller import last_month_pdf, remove_folder
 
 router = APIRouter()
 
@@ -15,14 +11,12 @@ def index():
     return {"Hello": "World"}
 
 @router.get("/monthly-budget")
-def monthly_budget():
+def monthly_budget(background_tasks: BackgroundTasks):#-> how can i return file type ? 
     '''
     Returns a pdf that visualizes your expenses
     '''
-    df = get_clean_data()
-    with tempfile.TemporaryDirectory(dir = 'response') as tmpdir:
-        #this should be a function that graphs every chart
-        create_barchart(get_lastmonth_grouped_df(df, 'Type'), tmpdir)
-        create_barchart(get_lastmonth_grouped_df(df, 'User'), tmpdir)
-        create_analytics_report(tmpdir)
-        return FileResponse(path = 'budget_report.pdf', filename = 'budget_report.pdf', media_type = 'pdf')
+    pdf_path, dir_path = last_month_pdf()#this could be optimized
+
+    #Background tasks runs AFTER returning the response
+    background_tasks.add_task(remove_folder, dir_path)
+    return FileResponse(path = pdf_path, filename = 'budget_report.pdf', media_type = 'pdf')

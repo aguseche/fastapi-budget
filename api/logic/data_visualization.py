@@ -8,7 +8,7 @@ matplotlib.use('Agg')
 #-----------------------------------#
 #Matplotlib parameters
 
-
+#should manage files from manage_files file
 def create_barchart(df:pd.DataFrame, tmpdir):
     #define variables
     last_month = df['Month_year'].max()
@@ -21,5 +21,5 @@ def create_barchart(df:pd.DataFrame, tmpdir):
     plt.ylabel('$ Money ')
     plt.xlabel(f'{label}')
     plt.title(f'Bugdet {label.lower()} for {last_month}')
-    plt.savefig(tmpdir + '/' + x_value)
+    plt.savefig(tmpdir / x_value)
     plt.close()

@@ -31,4 +31,7 @@
 [11/2/21 11:38:39] Eche: 700 auto lavado
 [11/2/21 11:40:14] Sofi: 1000 extra templado sofi
 [11/1/21 11:40:14] Sofi: 1000 extra templado sofi
+[11/12/20 11:40:14] Sofi: 800 extra templado sofi
 [11/12/20 11:40:14] Sofi: -800 extra templado sofi
+[11/3/21 11:38:23] Iker: 2500 auto nafta
+

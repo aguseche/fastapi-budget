@@ -47,6 +47,9 @@ def get_clean_data():
 
     # Drop date becouse not used in this version
     df.drop('Date', axis=1, inplace=True)
+
+    #Temporary remove plurals
+    df['Type'] = df['Type'].apply(lambda x: x[:-1] if x[-1] == 's' else x)
     return df
 
 def get_lastmonth_df(df: pd.DataFrame) -> pd.DataFrame:

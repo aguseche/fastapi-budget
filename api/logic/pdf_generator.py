@@ -1,6 +1,9 @@
 from fpdf import FPDF
 import datetime as dt
 
+from api.logic.manage_files import get_pdf_path
+
+
 WIDTH = 210
 HEIGHT = 297
 #set height for 2 graphs per page
@@ -26,7 +29,10 @@ def create_subtitle(text, y, pdf, font_size = SUBTITLE_FONT_SIZE):
     pdf.ln(y)
     pdf.cell(200, 4, text, align='C')
 
-def create_analytics_report(path, filename = "budget_report.pdf"):
+def create_analytics_report(path):
+    '''
+    Creates PDF report and retrieves the path
+    '''
     pdf = FPDF() # A4 (210 by 297 mm)
 
     '''Presentation Page'''
@@ -48,5 +54,4 @@ def create_analytics_report(path, filename = "budget_report.pdf"):
     pdf.image(f"{path}/Type.png", W1, H2, WIDTH/2-10)
     #pdf.image("", WIDTH/2, H2, WIDTH/2-10)
 
-    file_path = filename
-    pdf.output(file_path, 'F')
+    pdf.output(get_pdf_path(path), 'F')
