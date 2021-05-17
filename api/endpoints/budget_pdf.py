@@ -2,7 +2,6 @@ from fastapi import APIRouter, BackgroundTasks
 from fastapi.responses import FileResponse
 
 from api.logic.Controller import last_month_pdf, remove_folder
-
 router = APIRouter()
 
 

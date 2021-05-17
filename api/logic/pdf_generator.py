@@ -7,8 +7,9 @@ from api.logic.manage_files import get_pdf_path
 WIDTH = 210
 HEIGHT = 297
 #set height for 2 graphs per page
-H1 = 70
-H2 = 170
+H1 = 60
+H2 = 140
+H3 = 200
 W1 = 5 #standard
 
 TITLE_FONT_SIZE = 24
@@ -42,16 +43,18 @@ def create_analytics_report(path):
     
     '''First Page -- Last Month'''
     pdf.add_page()
-    create_subtitle(f"Budget", 20, pdf)
+    create_subtitle(f"Monthly Budget", 20, pdf)
 
-    #Budget per user
-    create_subtitle(f"First Analysis: money spent per user", 25, pdf)
-    pdf.image(f"{path}/User.png", W1, H1, WIDTH/2-10)
-    #pdf.image("", WIDTH/2, H1, WIDTH/2-10)
+    #First Analysis
+    create_subtitle(f"First Analysis: money spent last month", 25, pdf)
+    pdf.image(f"{path}/User-barchart.png", W1, H1, WIDTH/2-10)
+    pdf.image(f"{path}/Type-barchart.png", WIDTH/2, H1, WIDTH/2-10)
 
-    #Budget per type
-    create_subtitle(f"Second Analysis: money spent per type", 100, pdf)
-    pdf.image(f"{path}/Type.png", W1, H2, WIDTH/2-10)
-    #pdf.image("", WIDTH/2, H2, WIDTH/2-10)
+    #Second Analysis
+    create_subtitle(f"Second Analysis: graphs per user", 78, pdf)
+    pdf.image(f"{path}/Type-barchart.png", W1, H2, WIDTH/2-10)
+    pdf.image(f"{path}/Type-barchart.png", WIDTH/2, H2, WIDTH/2-10)
+    pdf.image(f"{path}/Type-barchart.png", W1, H3, WIDTH/2-10)
+    pdf.image(f"{path}/Type-barchart.png", WIDTH/2, H3, WIDTH/2-10)
 
     pdf.output(get_pdf_path(path), 'F')

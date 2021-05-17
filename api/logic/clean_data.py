@@ -58,11 +58,9 @@ def get_lastmonth_df(df: pd.DataFrame) -> pd.DataFrame:
     '''
     return df.loc[df['Month_year'] == df['Month_year'].max()] #devuelvo df con solo las que sean del ultimo mes
 
-def get_lastmonth_grouped_df(df: pd.DataFrame, group2: str, group1: str = 'Month_year') -> pd.DataFrame:
+def group_df(df: pd.DataFrame, group2: str, group1: str = 'Month_year') -> pd.DataFrame:
     '''
     Retreives a dataframe grouped by 'Month_year' column and a second one specified in group2
-    Only for last_month
     Dataframe has values Group2 and Price
     '''
-    lastmonth_df = get_lastmonth_df(df)
-    return lastmonth_df.groupby([group1,group2], as_index= False)['Price'].sum()
+    return df.groupby([group1,group2], as_index= False)['Price'].sum()
