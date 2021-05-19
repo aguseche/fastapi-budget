@@ -1,5 +1,6 @@
 from config import data_path
 import pandas as pd
+import numpy as np
 #from pandas.core.frame import DataFrame
 
 #Might be used for multiple paths / files in the future
@@ -64,3 +65,11 @@ def group_df(df: pd.DataFrame, group2: str, group1: str = 'Month_year') -> pd.Da
     Dataframe has values Group2 and Price
     '''
     return df.groupby([group1,group2], as_index= False)['Price'].sum()
+
+#Creo dataframe modelo para plotear
+def prepare_df(df:pd.DataFrame, dif_types:np.ndarray):
+    df_aux = pd.DataFrame(dif_types, columns = ['Type'])
+    df_aux['Price'] = 0.0
+    #Mergeo, borro columna que no sirve, lleno con 0 los nans y renombro la columna
+    df_aux = df_aux.merge(df, how='left', on='Type').drop(columns='Price_x').fillna(0).rename(columns={'Price_y':'Price'})
+    return df_aux

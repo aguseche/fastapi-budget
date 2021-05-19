@@ -25,6 +25,7 @@
 [11/4/21 11:39:08] Eche: 1000 salida
 [11/4/21 11:39:21] Eche: 500 casa super
 [11/4/21 11:40:14] Sofi: 5000 salida
+[11/4/21 11:40:14] Sofi: 5000 comida
 [11/2/21 11:37:59] Eche: 1500 Regalo tomi
 [11/2/21 11:38:09] Eche: 1000 comida mosqui
 [11/2/21 11:38:23] Eche: 2500 auto nafta
