@@ -1,13 +1,11 @@
 from config import data_path
 import pandas as pd
 import numpy as np
-#from pandas.core.frame import DataFrame
 
-#Might be used for multiple paths / files in the future
-def load_relevant_data():
+def load_relevant_data() -> pd.DataFrame:
     return pd.read_csv(data_path, header=None)
 
-def get_clean_data():
+def get_clean_data() -> None:
     
     df = load_relevant_data()
     #Drop unnecessary columns and rows
@@ -61,15 +59,18 @@ def get_lastmonth_df(df: pd.DataFrame) -> pd.DataFrame:
 
 def group_df(df: pd.DataFrame, group2: str, group1: str = 'Month_year') -> pd.DataFrame:
     '''
-    Retreives a dataframe grouped by 'Month_year' column and a second one specified in group2
-    Dataframe has values Group2 and Price
+    Retreives a dataframe with the sum of Price, grouped by group1 and group2
     '''
     return df.groupby([group1,group2], as_index= False)['Price'].sum()
 
-#Creo dataframe modelo para plotear
-def prepare_df(df:pd.DataFrame, dif_types:np.ndarray):
+#This function is used in order to create uniform charts
+def prepare_df(df:pd.DataFrame, dif_types:np.ndarray) -> pd.DataFrame:
+    '''
+    Returns a dataframe with columns Type and Price.
+    Type has all the dif types posibles and price is in 0
+    '''
     df_aux = pd.DataFrame(dif_types, columns = ['Type'])
     df_aux['Price'] = 0.0
-    #Mergeo, borro columna que no sirve, lleno con 0 los nans y renombro la columna
+    #Merge, delete unused column, fillnan with 0 and rename column
     df_aux = df_aux.merge(df, how='left', on='Type').drop(columns='Price_x').fillna(0).rename(columns={'Price_y':'Price'})
     return df_aux

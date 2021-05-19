@@ -5,14 +5,10 @@ from api.logic.Controller import last_month_pdf, remove_folder
 router = APIRouter()
 
 
-@router.get("/")
-def index():
-    return {"Hello": "World"}
-
 @router.get("/monthly-budget")
 def monthly_budget(background_tasks: BackgroundTasks):#-> how can i return file type ? 
     '''
-    Returns a pdf that visualizes your expenses
+    Returns a pdf that visualizes expenses
     '''
     pdf_path, dir_path = last_month_pdf()#this could be optimized
 
