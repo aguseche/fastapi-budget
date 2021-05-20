@@ -1,13 +1,16 @@
-from config import data_path
+from typing import Optional
 import pandas as pd
 import numpy as np
 
-def load_relevant_data() -> pd.DataFrame:
-    return pd.read_csv(data_path, header=None)
+from config import data_path
 
-def get_clean_data() -> None:
+
+# def load_relevant_data() -> pd.DataFrame:
+#      return pd.read_csv(data_path, header=None)
+
+def get_clean_data(df) -> None:
     
-    df = load_relevant_data()
+    # df = load_relevant_data()
     #Drop unnecessary columns and rows
     df.drop(df.columns[[1,2]], axis = 1, inplace = True) 
     df = df.iloc[1:]
@@ -51,11 +54,14 @@ def get_clean_data() -> None:
     df['Type'] = df['Type'].apply(lambda x: x[:-1] if x[-1] == 's' else x)
     return df
 
-def get_lastmonth_df(df: pd.DataFrame) -> pd.DataFrame:
+def get_month_df(df: pd.DataFrame, month: Optional[int] = None) -> pd.DataFrame:
     '''
-    Retrieves a DataFrame with last month values only ('Month_Year' column)
+    Retrieves a DataFrame with certain month values only ('Month_Year' column)
+    If month not given, retreives last month data
     '''
-    return df.loc[df['Month_year'] == df['Month_year'].max()] #devuelvo df con solo las que sean del ultimo mes
+    if not month:
+        month = df['Month_year'].max()
+    return df[df['Month_year'] == month] #devuelvo df con solo las que sean del ultimo mes
 
 def group_df(df: pd.DataFrame, group2: str, group1: str = 'Month_year') -> pd.DataFrame:
     '''

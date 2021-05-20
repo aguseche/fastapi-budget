@@ -3,7 +3,7 @@ from typing import Tuple
 
 import pandas as pd
 
-from api.logic.clean_data import get_clean_data, get_lastmonth_df, group_df, prepare_df
+from api.logic.clean_data import get_clean_data, get_month_df, group_df, prepare_df
 from api.logic.data_visualization import create_barchart
 from api.logic.pdf_generator import create_analytics_report
 from api.logic.manage_files import create_folder, delete_folder, get_pdf_path
@@ -16,7 +16,7 @@ def last_month_pdf()-> Tuple[pathlib.PosixPath,pathlib.PosixPath]:
     '''
     path = create_folder()
 
-    df = get_lastmonth_df(get_clean_data())#get data from last month
+    df = get_month_df(get_clean_data())#get data from last month
     plot_charts(df, path)
     create_analytics_report(path)
     #returns two paths, 1st for the PDF file and 2nd for the folder (in order to remove it later)
