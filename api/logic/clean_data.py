@@ -1,19 +1,16 @@
 from typing import Optional
 import pandas as pd
 import numpy as np
-
+import datetime as dt
 from config import data_path
 
+def get_clean_data(file) -> None:
+    df = pd.DataFrame(file)
 
-# def load_relevant_data() -> pd.DataFrame:
-#      return pd.read_csv(data_path, header=None)
-
-def get_clean_data(df) -> None:
-    
-    # df = load_relevant_data()
-    #Drop unnecessary columns and rows
-    df.drop(df.columns[[1,2]], axis = 1, inplace = True) 
+    #delete first row (automatically generated from whatsapp)
     df = df.iloc[1:]
+    #decode
+    df[0] = df[0].str.decode('utf-8')
 
     #Separate into 5 different columns and rename
     df = df[0].str.split(' ', n =5, expand=True)
@@ -32,12 +29,15 @@ def get_clean_data(df) -> None:
     #Drop time since not needed
     df.drop(['Time'], axis = 1, inplace = True) 
 
-    #rephrase date 
+    #rephrase date and description
     df['Date'] = df['Date'].str.replace('[', '', regex=True)
+    df = df.replace('\\n',' ', regex=True)
+    df = df.replace('\\r',' ', regex=True) 
+    df['Type'] = df['Type'].str.rstrip()
+    df['Description'] = df['Description'].str.rstrip()
 
     #Convert type to datetime
     df['Date'] = pd.to_datetime(df['Date'], errors="coerce",dayfirst=True)    
-
     #Rephrase user
     df['User'] = df['User'].str.replace(':','')
 
@@ -46,9 +46,8 @@ def get_clean_data(df) -> None:
     df['Description'] = df['Description'].str.lower()
 
     df['Month_year'] = pd.to_datetime(df['Date']).dt.to_period('M')
-
     # Drop date becouse not used in this version
-    df.drop('Date', axis=1, inplace=True)
+    #df.drop('Date', axis=1, inplace=True)
 
     #Temporary remove plurals
     df['Type'] = df['Type'].apply(lambda x: x[:-1] if x[-1] == 's' else x)

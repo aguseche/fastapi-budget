@@ -10,13 +10,13 @@ from api.logic.manage_files import create_folder, delete_folder, get_pdf_path
 
 different_groups = ['User', 'Type'] #should i import this from a config file ?
 
-def last_month_pdf()-> Tuple[pathlib.PosixPath,pathlib.PosixPath]:
+def last_month_pdf(file)-> Tuple[pathlib.PosixPath,pathlib.PosixPath]:
     '''
     Creates all the charts needed, then generates the PDF report
     '''
     path = create_folder()
 
-    df = get_month_df(get_clean_data())#get data from last month
+    df = get_month_df(get_clean_data(file))#get data from last month
     plot_charts(df, path)
     create_analytics_report(path)
     #returns two paths, 1st for the PDF file and 2nd for the folder (in order to remove it later)

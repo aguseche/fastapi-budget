@@ -10,8 +10,8 @@ HEIGHT = 297
 
 IMAGE_WIDTH = WIDTH/2-10
 #set height for 2 graphs per page
-H1 = 60
-H2 = 145
+H1 = 55
+H2 = 140
 H3 = 210
 W1 = 5 #standard
 
@@ -49,7 +49,7 @@ def create_analytics_report(path):
     create_subtitle(f"Monthly Budget", 20, pdf)
 
     #First Analysis
-    create_subtitle(f"First Analysis: money spent last month", 20, pdf)
+    create_subtitle(f"First Analysis: money spent last month", 15, pdf)
     pdf.image(f"{path}/User-barchart.png", W1, H1, IMAGE_WIDTH)
     pdf.image(f"{path}/Type-barchart.png", WIDTH/2, H1, IMAGE_WIDTH)
 

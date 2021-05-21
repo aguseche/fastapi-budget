@@ -1,7 +1,7 @@
 from pathlib import Path
 
 data_dir = Path('data')
-data_path = data_dir / '_chat.txt'
+data_path = data_dir / 'dffastapi.csv'
 
 response_path = 'response'
 
