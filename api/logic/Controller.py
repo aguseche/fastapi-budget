@@ -22,6 +22,14 @@ def last_month_pdf(file)-> Tuple[pathlib.PosixPath,pathlib.PosixPath]:
     #returns two paths, 1st for the PDF file and 2nd for the folder (in order to remove it later)
     return get_pdf_path(path), path 
 
+def last_month_excel(file):
+    path = create_folder()
+    df = get_month_df(get_clean_data(file))#get data from last month
+    df = df.sort_values(['User', 'Description'], ascending=[True, True])
+    excel_path = path / 'Tabla.xlsx'
+    df.to_excel(excel_path, index = False)
+    return excel_path, path
+
 def plot_charts(df: pd.DataFrame, path: pathlib.PosixPath) -> None:
     #Create two barcharts grouped by Type and by User
     for group in different_groups:

@@ -47,7 +47,7 @@ def get_clean_data(file) -> None:
 
     df['Month_year'] = pd.to_datetime(df['Date']).dt.to_period('M')
     # Drop date becouse not used in this version
-    #df.drop('Date', axis=1, inplace=True)
+    df.drop('Date', axis=1, inplace=True)
 
     #Temporary remove plurals
     df['Type'] = df['Type'].apply(lambda x: x[:-1] if x[-1] == 's' else x)
