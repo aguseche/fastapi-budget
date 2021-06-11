@@ -14,20 +14,26 @@ H1 = 55
 H2 = 140
 H3 = 210
 W1 = 5 #standard
+W2 = WIDTH/2
 
 TITLE_FONT_SIZE = 24
 SUBTITLE_FONT_SIZE = 20
 SUBSUBTITLE_FONT_SIZE = 16
 
-def create_presentation_page(pdf):
-    pdf.set_font('Arial', '', TITLE_FONT_SIZE)  
-    pdf.ln(30)
-    pdf.write(5, "Budget Analytics Report")
-    pdf.ln(10)
-    pdf.set_font('Arial', '', SUBSUBTITLE_FONT_SIZE)
-    pdf.write(4, f'{dt.date.today()}')
-    pdf.ln(5)
+class PDF(FPDF):
+    def header(self):
+        # Arial bold 15
+        self.set_font('Arial', '', 15)
+        # Title
+        self.cell(30, 10, 'Budget Analytics Report')
+        self.cell(130)
+        self.cell(30, 10, f'{dt.date.today()}')
+        # Line break
+        self.ln(20)
 
+
+
+    # pdf.write(4, )
 def create_subtitle(text, y, pdf, font_size = SUBTITLE_FONT_SIZE):
     pdf.set_font('Arial', '', font_size)
     pdf.ln(y)
@@ -37,34 +43,45 @@ def create_analytics_report(path):
     '''
     Creates PDF report and retrieves the path
     '''
-    pdf = FPDF() # A4 (210 by 297 mm)
+    pdf = PDF() # A4 (210 by 297 mm)
 
-    '''Presentation Page'''
+    '''First Page'''
     pdf.add_page()
-    #pdf.image()
-    create_presentation_page(pdf)
-    
-    '''First Page -- Last Month'''
-    pdf.add_page()
-    create_subtitle(f"Monthly Budget", 20, pdf)
-
-    #First Analysis
+    # create_presentation_page(pdf)
+    create_subtitle(f"Monthly Budget", 0, pdf)
     create_subtitle(f"First Analysis: money spent last month", 15, pdf)
-    pdf.image(f"{path}/User-barchart.png", W1, H1, IMAGE_WIDTH)
-    pdf.image(f"{path}/Type-barchart.png", WIDTH/2, H1, IMAGE_WIDTH)
+    pdf.image(f"{path}/User-barchart.png", 40, 60, 130)
+    pdf.image(f"{path}/Type-barchart.png", 40, 160, 130)
 
+    '''Second Page'''
     #Second Analysis
-    create_subtitle(f"Second Analysis: graphs per user", 85, pdf)
-    add_image(pdf, path / 'user0-barchart.png', W1, H2)
-    add_image(pdf, path / 'user1-barchart.png', WIDTH/2, H2)
-    add_image(pdf, path / 'user2-barchart.png', W1, H3)
-    add_image(pdf, path / 'user3-barchart.png', WIDTH/2, H3)
+    for i in range(12):
+        w = set_width(i)
+        h = set_heigth(i)
+        file_path = path / f'user{i}-barchart.png'
+        if validate_filepath(file_path):
+            if i == 6 or i==0:
+                pdf.add_page()
+                create_subtitle(f"Second Analysis: graphs per user", 15, pdf)
+            pdf.image(str(file_path), w, h, IMAGE_WIDTH)
+        else:
+            break
 
     pdf.output(get_pdf_path(path), 'F')
 
+def set_width(i:int)-> int:
+        if (i % 2) == 0:
+            return W1
+        return W2
 
-def add_image(pdf, path, x, y):
+def set_heigth(i:int)-> int:
+        if i <=1:
+            return H1
+        elif i<=3:
+            return H2
+        return H3
+
+#delete
+def validate_filepath(path: pathlib.PosixPath)->bool:
     if pathlib.Path.is_file(path):
-        pdf.image(str(path), x, y, IMAGE_WIDTH)
-
-    
+        return True
