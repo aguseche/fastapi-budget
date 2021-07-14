@@ -67,6 +67,12 @@ def create_analytics_report(path):
         else:
             break
 
+    '''Third Page'''
+    pdf.add_page()
+    create_subtitle(f"Third Analysis: comparative between last 3 months", 15, pdf)
+    pdf.image(f"{path}/User-monthsbarchart.png", 40, 60, 130)
+    pdf.image(f"{path}/Type-monthsbarchart.png", 40, 160, 130)
+
     pdf.output(get_pdf_path(path), 'F')
 
 def set_width(i:int)-> int:
