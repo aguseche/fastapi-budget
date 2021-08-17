@@ -63,7 +63,7 @@ def plot_3month_charts(df: pd.DataFrame, path: pathlib.PosixPath) -> None:
         create_barchart(df_sub, path, 'Type', f"{name}'s budget", i,hue="Month_year", hue_order=dif_months)
 
 def remove_folder(path: pathlib.PosixPath) -> None:
-    '''s
+    '''
     Deletes the folder used in the endpoint (its used as a BackgroudTask)
     '''
     delete_folder(path)
