@@ -50,8 +50,13 @@ def get_clean_data(file) -> None:
     df.drop('Date', axis=1, inplace=True)
 
     #Temporary remove plurals
-    df['Type'] = df['Type'].apply(lambda x: x[:-1] if x[-1] == 's' else x)
-    return df
+    df['Type'] = df['Type'].apply(remove_plurals)
+
+def remove_plurals(x):
+    if len(x) >= 2:
+        if x[-1] =='s':
+            return x[:-1]
+    return x
 
 def get_month_df(df: pd.DataFrame, month: Optional[int] = None) -> pd.DataFrame:
     '''
