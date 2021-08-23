@@ -4,7 +4,6 @@ import datetime as dt
 
 from api.logic.manage_files import get_pdf_path
 
-
 WIDTH = 210
 HEIGHT = 297
 
@@ -34,12 +33,12 @@ class PDF(FPDF):
 
 
     # pdf.write(4, )
-def create_subtitle(text, y, pdf, font_size = SUBTITLE_FONT_SIZE):
+def create_subtitle(text: str, y: int, pdf, font_size:int = SUBTITLE_FONT_SIZE)-> None:
     pdf.set_font('Arial', '', font_size)
     pdf.ln(y)
     pdf.cell(200, 4, text, align='C')
 
-def create_analytics_report(path):
+def create_analytics_report(path: pathlib.PosixPath, users):
     '''
     Creates PDF report and retrieves the path
     '''
@@ -50,15 +49,15 @@ def create_analytics_report(path):
     # create_presentation_page(pdf)
     create_subtitle(f"Monthly Budget", 0, pdf)
     create_subtitle(f"First Analysis: money spent last month", 15, pdf)
-    pdf.image(f"{path}/User-barchart.png", 40, 60, 130)
-    pdf.image(f"{path}/Type-barchart.png", 40, 160, 130)
+    pdf.image(f"{path}/User.png", 40, 60, 130)
+    pdf.image(f"{path}/Type.png", 40, 160, 130)
 
     '''Second Page'''
     #Second Analysis
-    for i in range(12):
+    for i, user in enumerate(users):
         w = set_width(i)
         h = set_heigth(i)
-        file_path = path / f'user{i}-barchart.png'
+        file_path = path / f'{user}.png'
         if validate_filepath(file_path):
             if i == 6 or i==0:
                 pdf.add_page()
@@ -70,8 +69,8 @@ def create_analytics_report(path):
     '''Third Page'''
     pdf.add_page()
     create_subtitle(f"Third Analysis: comparative between last 3 months", 15, pdf)
-    pdf.image(f"{path}/User-monthsbarchart.png", 40, 60, 130)
-    pdf.image(f"{path}/Type-monthsbarchart.png", 40, 160, 130)
+    pdf.image(f"{path}/User-3months.png", 40, 60, 130)
+    pdf.image(f"{path}/Type-3months.png", 40, 160, 130)
 
     pdf.output(get_pdf_path(path), 'F')
 

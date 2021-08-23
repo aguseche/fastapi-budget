@@ -1,9 +1,9 @@
+from typing import Optional
 import pandas as pd
 from fastapi import APIRouter, BackgroundTasks, UploadFile, File
 from fastapi.responses import FileResponse
 
-from api.logic.Controller import last_month_pdf, remove_folder, last_month_excel
-from api.logic.clean_data import get_clean_data
+from api.logic.Controller import month_pdf, remove_folder
 router = APIRouter()
 
 
@@ -16,8 +16,8 @@ def monthly_budget(background_tasks: BackgroundTasks, file: UploadFile = File(..
     '''
     Returns a pdf that visualizes expenses
     '''
-    pdf_path, dir_path = last_month_pdf(file.file)#this could be optimized
+    pdf_path, dir_path = month_pdf(file.file)#this could be optimized
 
     #Background tasks runs AFTER returning the response
-    background_tasks.add_task(remove_folder, dir_path)
+    #background_tasks.add_task(remove_folder, dir_path)
     return FileResponse(path = pdf_path, filename = 'budget_report.pdf', media_type = 'pdf')

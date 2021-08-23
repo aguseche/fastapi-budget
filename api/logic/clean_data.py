@@ -52,20 +52,17 @@ def get_clean_data(file) -> None:
     #Temporary remove plurals
     df['Type'] = df['Type'].apply(remove_plurals)
 
-def remove_plurals(x):
-    if len(x) >= 2:
-        if x[-1] =='s':
-            return x[:-1]
-    return x
+    return df
 
-def get_month_df(df: pd.DataFrame, month: Optional[int] = None) -> pd.DataFrame:
+def get_month_df(df: pd.DataFrame, month: Optional[str] = None) -> pd.DataFrame:
     '''
     Retrieves a DataFrame with certain month values only ('Month_Year' column)
     If month not given, retreives last month data
     '''
+    #2021-04 str
     if not month:
         month = df['Month_year'].max()
-    return df[df['Month_year'] == month] #devuelvo df con solo las que sean del ultimo mes
+    return df[df['Month_year'] == month]
 
 def group_df(df: pd.DataFrame, group2: str, group1: str = 'Month_year') -> pd.DataFrame:
     '''
@@ -77,10 +74,23 @@ def group_df(df: pd.DataFrame, group2: str, group1: str = 'Month_year') -> pd.Da
 def prepare_df(df:pd.DataFrame, dif_types:np.ndarray) -> pd.DataFrame:
     '''
     Returns a dataframe with columns Type and Price.
-    Type has all the dif types posibles and price is in 0
+    Type has all the diferent posible types 
     '''
     df_aux = pd.DataFrame(dif_types, columns = ['Type'])
     df_aux['Price'] = 0.0
     #Merge, delete unused column, fillnan with 0 and rename column
     df_aux = df_aux.merge(df, how='left', on='Type').drop(columns='Price_x').fillna(0).rename(columns={'Price_y':'Price'})
     return df_aux
+
+def get_diferent_months(df:pd.DataFrame):
+    dif_months = np.array(df['Month_year'].unique())
+    dif_months.sort()
+    dif_months = dif_months[-3:]
+    return dif_months
+
+#Lambda Function
+def remove_plurals(x):
+    if len(x) >= 2:
+        if x[-1] =='s':
+            return x[:-1]
+    return x
