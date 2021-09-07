@@ -79,7 +79,8 @@ def prepare_df(df:pd.DataFrame, dif_types:np.ndarray) -> pd.DataFrame:
     df_aux = pd.DataFrame(dif_types, columns = ['Type'])
     df_aux['Price'] = 0.0
     #Merge, delete unused column, fillnan with 0 and rename column
-    df_aux = df_aux.merge(df, how='left', on='Type').drop(columns='Price_x').fillna(0).rename(columns={'Price_y':'Price'})
+    df_aux = df_aux.merge(df, how='left', on='Type').drop(columns='Price_x')
+    df_aux = df_aux.rename(columns={'Price_y':'Price'}).fillna(0)
     return df_aux
 
 def get_diferent_months(df:pd.DataFrame):

@@ -15,6 +15,7 @@ matplotlib.use('Agg')
 plt.style.use('ggplot')
 #-----------------------------------#
 
+###### VIEJO ######
 #Create Graphs
 def create_barchart(df:pd.DataFrame, path: pathlib.PosixPath, column: str, 
                     title: Optional[str] = None, index:Optional[int] = None,
@@ -52,6 +53,7 @@ def get_filename(name:str, index:int = None, hue: Optional[str] = None) -> str:
         return f'user{index}-barchart.png'
     return name + '-barchart.png'
 
+###### NUEVO ######
 def plot_simple_chart(df: pd.DataFrame, path: pathlib.PosixPath)->None:
     column = df.columns[1]
     filename = path / column
