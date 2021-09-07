@@ -7,13 +7,20 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from api.logic.clean_data import get_diferent_months
+
+#-----------------------------------#
+#Error solved but dont know what this does 
+import matplotlib
+matplotlib.use('Agg')
+#-----------------------------------#
+
 #@dataclass
 class Chart:
     #Multiple users
     hue: Optional[str] = None
     hue_order: Optional[str] = None
 
-    color: str = '#4e94bb'
+    #color: str = '#4e94bb'
     y: str = 'Price'
     df: pd.DataFrame
     path: pathlib.PosixPath 
@@ -39,7 +46,7 @@ class Chart:
             self.hue = 'Month_year'
             self.hue_order = get_diferent_months(df)
             self.filename =str(self.filename) + '-3months'
-            self.color = None #por ahi lo re borro a esto pero quedaba mas lindo con un poco de color
+            #self.color = None
             self.title = f'{self.column} 3 month analysis'
 
     def plot_chart(cls)->None:

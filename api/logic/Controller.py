@@ -4,8 +4,7 @@ import numpy as np
 
 import pandas as pd
 
-from api.logic.clean_data import get_clean_data, get_month_df, group_df, prepare_df
-from api.logic.data_visualization import create_barchart, plot_multipleusers_simple_chart, plot_simple_chart, plot_comparative_charts, plot_multipleusers_comparative_charts
+from api.logic.clean_data import get_clean_data, get_month_df, group_df
 from api.logic.manage_files import create_folder, delete_folder, get_pdf_path
 
 from api.logic.generators.excel_generator import monthly_excel
@@ -35,14 +34,13 @@ def month_pdf(file)-> Tuple[pathlib.PosixPath,pathlib.PosixPath]:
 
     return get_pdf_path(path), path
 
-
 def plot_simple_charts(df: pd.DataFrame, path: pathlib.PosixPath) -> None:
     #Create two barcharts grouped by Type and by User
     for group in DIFFERENT_GROUPS:
         grouped_df = group_df(df, group)
         Chart(df=grouped_df, path=path).plot_chart()
     #Create barcharts per user 
-    df_aux = df.groupby(['Month_year','User','Type'], as_index= False)['Price'].sum()
+    df_aux = df.groupby(['Month_year','User','Type'], as_index= False)['Price'].sum() #shouldnt be here
     for user in df_aux['User'].unique():
         Chart(df=df_aux, path=path, user=user).plot_chart()
 

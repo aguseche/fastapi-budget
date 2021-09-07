@@ -70,19 +70,6 @@ def group_df(df: pd.DataFrame, group2: str, group1: str = 'Month_year') -> pd.Da
     '''
     return df.groupby([group1,group2], as_index= False)['Price'].sum()
 
-#This function is used in order to create uniform charts
-def prepare_df(df:pd.DataFrame, dif_types:np.ndarray) -> pd.DataFrame:
-    '''
-    Returns a dataframe with columns Type and Price.
-    Type has all the diferent posible types 
-    '''
-    df_aux = pd.DataFrame(dif_types, columns = ['Type'])
-    df_aux['Price'] = 0.0
-    #Merge, delete unused column, fillnan with 0 and rename column
-    df_aux = df_aux.merge(df, how='left', on='Type').drop(columns='Price_x')
-    df_aux = df_aux.rename(columns={'Price_y':'Price'}).fillna(0)
-    return df_aux
-
 def get_diferent_months(df:pd.DataFrame):
     dif_months = np.array(df['Month_year'].unique())
     dif_months.sort()
@@ -95,3 +82,16 @@ def remove_plurals(x):
         if x[-1] =='s':
             return x[:-1]
     return x
+
+# #This function is used in order to create uniform charts
+# def prepare_df(df:pd.DataFrame, dif_types:np.ndarray) -> pd.DataFrame:
+#     '''
+#     Returns a dataframe with columns Type and Price.
+#     Type has all the diferent posible types 
+#     '''
+#     df_aux = pd.DataFrame(dif_types, columns = ['Type'])
+#     df_aux['Price'] = 0.0
+#     #Merge, delete unused column, fillnan with 0 and rename column
+#     df_aux = df_aux.merge(df, how='left', on='Type').drop(columns='Price_x')
+#     df_aux = df_aux.rename(columns={'Price_y':'Price'}).fillna(0)
+#     return df_aux
