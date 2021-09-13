@@ -52,9 +52,9 @@ def plot_3month_charts(df: pd.DataFrame, path: pathlib.PosixPath) -> None:
         df_sub = df[df.User == user].drop(columns=['Description','User'])
         Chart(df=df_sub, path=path, user=user).plot_chart()
 
-def month_excel(file, month:Optional[int]):
+def month_excel(file):
     path = create_folder()
-    excel_path = monthly_excel(path, file, month)
+    excel_path = monthly_excel(path, file)
     return excel_path, path
 
 def remove_folder(path: pathlib.PosixPath) -> None:
