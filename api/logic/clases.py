@@ -38,6 +38,8 @@ class Chart:
         if user:
             self.filename = path/user
             self.title = f"{user}'s budget"
+            if len(self.df['Month_year'].unique()) == 1:
+                self.column = 'Type'
         else:
             self.filename = path/self.column
             self.title = f'Bugdet per {self.column.lower()}s'

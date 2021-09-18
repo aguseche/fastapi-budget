@@ -42,7 +42,8 @@ def plot_simple_charts(df: pd.DataFrame, path: pathlib.PosixPath) -> None:
     #Create barcharts per user 
     df_aux = df.groupby(['Month_year','User','Type'], as_index= False)['Price'].sum() #shouldnt be here
     for user in df_aux['User'].unique():
-        Chart(df=df_aux, path=path, user=user).plot_chart()
+        df_sub = df_aux[df_aux['User']==user]
+        Chart(df=df_sub, path=path, user=user).plot_chart()
 
 def plot_3month_charts(df: pd.DataFrame, path: pathlib.PosixPath) -> None:
     for group in DIFFERENT_GROUPS:
