@@ -12,6 +12,8 @@ def get_clean_data(file) -> None:
     #decode
     df[0] = df[0].str.decode('utf-8')
 
+    #delete double spaces before split
+    df = df.replace('  ',' ', regex=True) 
     #Separate into 5 different columns and rename
     df = df[0].str.split(' ', n =5, expand=True)
     df.rename(columns={0:'Date', 1:'Time', 2: 'User', 3:'Price', 4:'Type', 5:'Description'}, inplace=True)
@@ -23,6 +25,8 @@ def get_clean_data(file) -> None:
     #Set NaN rows with Price < 0
     df['Price'] = df['Price'][df['Price'] > 0]  
 
+
+
     #Delete rows where user, price or type are none / nan
     df = df.mask(df.eq('None')).dropna(subset=['User','Price','Type'])
 
@@ -32,7 +36,7 @@ def get_clean_data(file) -> None:
     #rephrase date and description
     df['Date'] = df['Date'].str.replace('[', '', regex=True)
     df = df.replace('\\n',' ', regex=True)
-    df = df.replace('\\r',' ', regex=True) 
+    df = df.replace('\\r',' ', regex=True)
     df['Type'] = df['Type'].str.rstrip()
     df['Description'] = df['Description'].str.rstrip()
 
